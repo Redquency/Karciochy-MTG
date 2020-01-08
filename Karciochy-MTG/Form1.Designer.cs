@@ -37,40 +37,47 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.SetComboBox = new System.Windows.Forms.ComboBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rarityComboBox = new System.Windows.Forms.ComboBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.Lp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CardName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Set = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Info = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Link = new System.Windows.Forms.DataGridViewLinkColumn();
             this.Image = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Lp,
             this.CardName,
             this.Set,
             this.Info,
-            this.Link,
             this.Image});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 68);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 102);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(667, 620);
+            this.dataGridView1.Size = new System.Drawing.Size(667, 586);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_RowEnter);
             // 
             // GetCardsButton
             // 
             this.GetCardsButton.Location = new System.Drawing.Point(12, 8);
             this.GetCardsButton.Name = "GetCardsButton";
-            this.GetCardsButton.Size = new System.Drawing.Size(330, 54);
+            this.GetCardsButton.Size = new System.Drawing.Size(210, 54);
             this.GetCardsButton.TabIndex = 2;
             this.GetCardsButton.Text = "Get Cards";
             this.GetCardsButton.UseVisualStyleBackColor = true;
@@ -86,7 +93,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.cardNameTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(348, 8);
+            this.groupBox1.Location = new System.Drawing.Point(228, 8);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(109, 54);
             this.groupBox1.TabIndex = 4;
@@ -98,7 +105,7 @@
             this.groupBox2.Controls.Add(this.SetComboBox);
             this.groupBox2.Location = new System.Drawing.Point(463, 8);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(207, 54);
+            this.groupBox2.Size = new System.Drawing.Size(216, 54);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Set";
@@ -108,27 +115,74 @@
             this.SetComboBox.FormattingEnabled = true;
             this.SetComboBox.Location = new System.Drawing.Point(6, 18);
             this.SetComboBox.Name = "SetComboBox";
-            this.SetComboBox.Size = new System.Drawing.Size(195, 21);
+            this.SetComboBox.Size = new System.Drawing.Size(204, 21);
             this.SetComboBox.TabIndex = 6;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::Karciochy_MTG.Properties.Resources.Magic_card_back;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(14, 21);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(462, 645);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.pictureBox1);
+            this.groupBox3.Location = new System.Drawing.Point(689, 8);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(491, 680);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Card Image";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.rarityComboBox);
+            this.groupBox4.Location = new System.Drawing.Point(343, 8);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(114, 54);
+            this.groupBox4.TabIndex = 5;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Rarity";
+            // 
+            // rarityComboBox
+            // 
+            this.rarityComboBox.FormattingEnabled = true;
+            this.rarityComboBox.Location = new System.Drawing.Point(6, 20);
+            this.rarityComboBox.Name = "rarityComboBox";
+            this.rarityComboBox.Size = new System.Drawing.Size(102, 21);
+            this.rarityComboBox.TabIndex = 7;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 68);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(667, 28);
+            this.progressBar1.TabIndex = 8;
             // 
             // Lp
             // 
             this.Lp.HeaderText = "Lp";
             this.Lp.Name = "Lp";
-            this.Lp.ReadOnly = true;
+            this.Lp.Width = 40;
             // 
             // CardName
             // 
             this.CardName.HeaderText = "Card Name";
             this.CardName.Name = "CardName";
-            this.CardName.ReadOnly = true;
-            this.CardName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.CardName.Width = 120;
             // 
             // Set
             // 
             this.Set.HeaderText = "Set";
             this.Set.Name = "Set";
-            this.Set.ReadOnly = true;
+            this.Set.Width = 120;
             // 
             // Info
             // 
@@ -137,13 +191,7 @@
             this.Info.DefaultCellStyle = dataGridViewCellStyle1;
             this.Info.HeaderText = "Info";
             this.Info.Name = "Info";
-            this.Info.ReadOnly = true;
-            // 
-            // Link
-            // 
-            this.Link.HeaderText = "Link";
-            this.Link.Name = "Link";
-            this.Link.ReadOnly = true;
+            this.Info.Width = 200;
             // 
             // Image
             // 
@@ -157,13 +205,15 @@
             this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
             this.Image.MinimumWidth = 100;
             this.Image.Name = "Image";
-            this.Image.ReadOnly = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 700);
+            this.ClientSize = new System.Drawing.Size(1193, 700);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.GetCardsButton);
@@ -175,6 +225,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -187,11 +240,15 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox SetComboBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox rarityComboBox;
+        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Lp;
         private System.Windows.Forms.DataGridViewTextBoxColumn CardName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Set;
         private System.Windows.Forms.DataGridViewTextBoxColumn Info;
-        private System.Windows.Forms.DataGridViewLinkColumn Link;
         private System.Windows.Forms.DataGridViewImageColumn Image;
     }
 }

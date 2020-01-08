@@ -14,6 +14,8 @@ using MtgApiManager.Lib.Core;
 using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 using System.Threading;
+using Newtonsoft.Json;
+
 
 namespace Karciochy_MTG
 {
@@ -21,7 +23,8 @@ namespace Karciochy_MTG
     {
         private CardService cardService;
         private List<List<Card>> cardPages;
-        private string setName;
+        private string setName, cardRarity;
+        public string[] Rarity = new string[] { "Basic Land", "Common", "Uncommon", "Rare", "Mythic Rare", "Special" };//Common, Uncommon, Rare, Mythic Rare, Special, Basic Land
         public MainForm()
         {
             InitializeComponent();
@@ -35,7 +38,7 @@ namespace Karciochy_MTG
             //var sets = setService.
             cardPages = new List<List<Card>>();
 
-
+            rarityComboBox.Items.AddRange(Rarity);
 
 
 
@@ -43,6 +46,9 @@ namespace Karciochy_MTG
             //GetCardsButton.Enabled = false;
 
             GetSet();
+            //ScryfallCard();
+            progressBar1.Value = 0;
+
 
 
 
@@ -54,10 +60,11 @@ namespace Karciochy_MTG
         void GetSet()
         {
             var setService = new SetService();
+            
             var s =  setService.All();
             if (s.IsSuccess)
             {
-                var exp = s.Value.Select(d=>d.Name).ToList<string>();
+                var exp = s.Value.Select(d=>d.Name).ToList<string>();             
                 SetComboBox.Items.AddRange(exp.ToArray<string>());
                 SetComboBox.SelectedItem = SetComboBox.Items[0];
             }
@@ -65,29 +72,53 @@ namespace Karciochy_MTG
 
         }
 
-        async Task SetupCards(string CardName, string CardSet)
+        async Task SetupCards(string CardName, string CardSet, string Rarity)
         {
             cardPages.Clear();
-            var cardCollection = cardService.Where(z => z.SetName, CardSet).Where(x => x.Rarity, "Common").Where(c => c.Name, CardName);
+            
+            var cardCollection = cardService.Where(z => z.SetName, CardSet).Where(r=>r.Rarity, Rarity).Where(c => c.Name, CardName);
             var getCollection = await cardCollection.AllAsync();
             int pagesCount = getCollection.PagingInfo.TotalPages;
-
-            for (int i = 0; i <= pagesCount; i++)
-            {
-                var page = cardCollection.Where(p => p.Page, i + 1).All();
-                if (page.IsSuccess)
+            bool pagesCompleted = false;
+            //await Task.Run(() =>
+            //{
+                for (int i = 0; i <= pagesCount; i++)
                 {
-                    cardPages.Add(page.Value);
+                    //pageTsks.Add(Task.Run(() =>
+                    //{
+
+                        var page = await cardCollection.Where(p => p.Page, i + 1).AllAsync();
+                        if (page.IsSuccess)
+                        {
+                            cardPages.Add(page.Value);
+                        }
+                        else
+                        {
+                            throw new Exception("DUPA");
+                        }
+                    //}));
+                    
+
                 }
 
-            }
+
+
+                //do
+                //{
+                //    pagesCompleted = pageTsks.Where(t => t.Status == TaskStatus.RanToCompletion).Count() == pagesCount;
+                //} while (!pagesCompleted);
+
+                Console.WriteLine("PAGES COMPLETED");
+               
+
+           // });
             
         }
 
         public async Task<MtgApiManager.Lib.Core.Exceptional<Card>> GetCard()
         {
-            var result = cardService.Find("f2eb06047a3a8e515bff62b55f29468fcde6332a");
-            var asyncResult = await cardService.FindAsync("f2eb06047a3a8e515bff62b55f29468fcde6332a");
+            //var result = cardService.Find("03f4341c-088b-4f35-b82b-3d98d8a93de4");
+            var asyncResult = await cardService.FindAsync("03f4341c088b4f35b82b3d98d8a93de4");
             return asyncResult;
 
         }
@@ -142,6 +173,7 @@ namespace Karciochy_MTG
             GetCardsButton.Enabled = false;
   
             setName = SetComboBox.Text;
+            cardRarity = rarityComboBox.Text;
             dataGridView1.Rows.Clear();
             Task.Run(SetCards);
 
@@ -150,9 +182,31 @@ namespace Karciochy_MTG
 
         }
 
+         public Image ScryfallCard(int multiverseId)
+        {
+            string baseUrl = "https://api.scryfall.com/";
+            string quality = "normal"; // large small normal
+            string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);
+            byte[] buffer = new byte[1024 * 10];
+            //byte[] buffer = new byte[1024*100];
+
+            using (System.Net.WebClient webClient = new System.Net.WebClient())
+            {
+                using (Stream stream = webClient.OpenRead(Path.Combine(baseUrl, cardUrl)))
+                {
+                    Image cardImage = System.Drawing.Image.FromStream(stream);
+                    return cardImage;
+                }
+            }
+
+
+        }
+
         async public Task SetCards()
         {
-            await SetupCards(cardNameTextBox.Text, setName);
+            await SetupCards(cardNameTextBox.Text, setName, cardRarity);
+
+            int totalCardCount = cardPages.Select(s=>s.Where(u=>u.ImageUrl != null).Count()).Sum();
 
             foreach (var cardPage in cardPages)
             {
@@ -162,13 +216,13 @@ namespace Karciochy_MTG
                      {
                         _ = Task.Run(() =>
                           {
-                              Image img = DownloadImage(card.ImageUrl.AbsoluteUri);
+                              Image img = ScryfallCard(card.MultiverseId.Value);//DownloadImage(card.ImageUrl.AbsoluteUri);
 
                               if (dataGridView1.InvokeRequired)
                               {
                                   dataGridView1.Invoke(new MethodInvoker(() =>
                                   {
-                                      dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, card.ImageUrl, img });
+                                      dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
                                       dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
                                     //dataGridView1.Refresh();
                                   }));
@@ -176,10 +230,28 @@ namespace Karciochy_MTG
                               }
                               else
                               {
-                                  dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, card.ImageUrl, img });
+                                  dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
                                   dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
                                 //dataGridView1.Refresh();
                               }
+
+                              //progressBar1.Value = 50;
+
+                              if (progressBar1.InvokeRequired)
+                              {
+                                  progressBar1.Invoke(new MethodInvoker(() =>
+                                  {
+                                      progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
+                                  }));
+
+                              }
+                              else
+                              {
+                                  progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
+                              }
+
+                              Console.WriteLine((int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f));
+
                           });
                              
                          
@@ -199,6 +271,12 @@ namespace Karciochy_MTG
              
 
 
+        }
+
+        private void DataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            pictureBox1.Image = (Image)dataGridView1.Rows[rowIndex].Cells[4].Value;
         }
 
         //private async Task DownloadImageAsync(dataGridViv Uri uri)
