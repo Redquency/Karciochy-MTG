@@ -29,44 +29,56 @@ namespace Karciochy_MTG
         {
             InitializeComponent();
 
-
-            dataGridView1.RowTemplate.Height = 150;
+            dataGridView1.RowTemplate.Height = 100;
 
             cardService = new CardService();
-
-
-            //var sets = setService.
             cardPages = new List<List<Card>>();
-
             rarityComboBox.Items.AddRange(Rarity);
+            SetComboBox.Enabled = false;
 
-
-
-            //var ff = GetSet();
-            //GetCardsButton.Enabled = false;
-
-            GetSet();
+            Task.Run(GetSet);
             //ScryfallCard();
             progressBar1.Value = 0;
-
-
-
-
-
-
-
         }
 
-        void GetSet()
+        public void SetWinFormControll(Control winFormControl, MethodInvoker method)
+        {
+            if(winFormControl.InvokeRequired)
+            {
+                winFormControl.Invoke(method);
+            }
+            else
+            {
+                method.Invoke();
+            }
+        }
+
+        async Task GetSet()
         {
             var setService = new SetService();
             
-            var s =  setService.All();
+            var s =  await setService.AllAsync();
             if (s.IsSuccess)
             {
-                var exp = s.Value.Select(d=>d.Name).ToList<string>();             
-                SetComboBox.Items.AddRange(exp.ToArray<string>());
-                SetComboBox.SelectedItem = SetComboBox.Items[0];
+                var exp = s.Value.Select(d=>d.Name).ToList<string>();
+                if (SetComboBox.InvokeRequired)
+                {
+                    SetComboBox.Invoke(new MethodInvoker(() =>
+                    {
+                        progressBar1.Style = ProgressBarStyle.Blocks;
+                        SetComboBox.Enabled = true;
+                        SetComboBox.Items.AddRange(exp.ToArray<string>());
+                        SetComboBox.SelectedItem = SetComboBox.Items[0];
+                    }));
+
+                }
+                else
+                {
+                    progressBar1.Style = ProgressBarStyle.Blocks;
+                    SetComboBox.Enabled = true;
+                    SetComboBox.Items.AddRange(exp.ToArray<string>());
+                    SetComboBox.SelectedItem = SetComboBox.Items[0];
+                }
             }
             else throw new Exception("FAIL");
 
@@ -75,7 +87,9 @@ namespace Karciochy_MTG
         async Task SetupCards(string CardName, string CardSet, string Rarity)
         {
             cardPages.Clear();
-            
+
+            SetWinFormControll(progressBar1, new MethodInvoker(() => progressBar1.Style = ProgressBarStyle.Marquee));
+
             var cardCollection = cardService.Where(z => z.SetName, CardSet).Where(r=>r.Rarity, Rarity).Where(c => c.Name, CardName);
             var getCollection = await cardCollection.AllAsync();
             int pagesCount = getCollection.PagingInfo.TotalPages;
@@ -86,7 +100,6 @@ namespace Karciochy_MTG
                 {
                     //pageTsks.Add(Task.Run(() =>
                     //{
-
                         var page = await cardCollection.Where(p => p.Page, i + 1).AllAsync();
                         if (page.IsSuccess)
                         {
@@ -97,20 +110,17 @@ namespace Karciochy_MTG
                             throw new Exception("DUPA");
                         }
                     //}));
-                    
 
                 }
 
 
+            //do
+            //{
+            //    pagesCompleted = pageTsks.Where(t => t.Status == TaskStatus.RanToCompletion).Count() == pagesCount;
+            //} while (!pagesCompleted);
+            SetWinFormControll(progressBar1, new MethodInvoker(() => progressBar1.Style = ProgressBarStyle.Blocks));
 
-                //do
-                //{
-                //    pagesCompleted = pageTsks.Where(t => t.Status == TaskStatus.RanToCompletion).Count() == pagesCount;
-                //} while (!pagesCompleted);
-
-                Console.WriteLine("PAGES COMPLETED");
-               
-
+            Console.WriteLine("PAGES COMPLETED");
            // });
             
         }
@@ -187,7 +197,7 @@ namespace Karciochy_MTG
             string baseUrl = "https://api.scryfall.com/";
             string quality = "normal"; // large small normal
             string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);
-            byte[] buffer = new byte[1024 * 10];
+            //byte[] buffer = new byte[1024 * 10];
             //byte[] buffer = new byte[1024*100];
 
             using (System.Net.WebClient webClient = new System.Net.WebClient())
@@ -224,7 +234,6 @@ namespace Karciochy_MTG
                                   {
                                       dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
                                       dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
-                                    //dataGridView1.Refresh();
                                   }));
 
                               }
@@ -232,10 +241,8 @@ namespace Karciochy_MTG
                               {
                                   dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
                                   dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
-                                //dataGridView1.Refresh();
                               }
 
-                              //progressBar1.Value = 50;
 
                               if (progressBar1.InvokeRequired)
                               {
