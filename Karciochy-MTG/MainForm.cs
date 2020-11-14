@@ -24,7 +24,7 @@ namespace Karciochy_MTG
         private CardService cardService;
         private List<List<Card>> cardPages;
         private string setName, cardRarity;
-        public string[] Rarity = new string[] { "Basic Land", "Common", "Uncommon", "Rare", "Mythic Rare", "Special" };//Common, Uncommon, Rare, Mythic Rare, Special, Basic Land
+        public string[] Rarity = new string[] { "Basic Land", "Common", "Uncommon", "Rare", "Mythic Rare", "Special" };
         public MainForm()
         {
             InitializeComponent();
@@ -61,24 +61,15 @@ namespace Karciochy_MTG
             if (s.IsSuccess)
             {
                 var exp = s.Value.Select(d=>d.Name).ToList<string>();
-                if (SetComboBox.InvokeRequired)
-                {
-                    SetComboBox.Invoke(new MethodInvoker(() =>
-                    {
-                        progressBar1.Style = ProgressBarStyle.Blocks;
-                        SetComboBox.Enabled = true;
-                        SetComboBox.Items.AddRange(exp.ToArray<string>());
-                        SetComboBox.SelectedItem = SetComboBox.Items[0];
-                    }));
 
-                }
-                else
+                SetWinFormControll(SetComboBox, () => 
                 {
                     progressBar1.Style = ProgressBarStyle.Blocks;
                     SetComboBox.Enabled = true;
                     SetComboBox.Items.AddRange(exp.ToArray<string>());
                     SetComboBox.SelectedItem = SetComboBox.Items[0];
-                }
+                });
+               
             }
             else throw new Exception("FAIL");
 
@@ -107,7 +98,7 @@ namespace Karciochy_MTG
                         }
                         else
                         {
-                            throw new Exception("DUPA");
+                            throw new Exception("SETUP CARD FAIL");
                         }
                     //}));
 
@@ -127,7 +118,6 @@ namespace Karciochy_MTG
 
         public async Task<MtgApiManager.Lib.Core.Exceptional<Card>> GetCard()
         {
-            //var result = cardService.Find("03f4341c-088b-4f35-b82b-3d98d8a93de4");
             var asyncResult = await cardService.FindAsync("03f4341c088b4f35b82b3d98d8a93de4");
             return asyncResult;
 
@@ -173,27 +163,20 @@ namespace Karciochy_MTG
                 throw new Exception(ex.Message, ex);
 
             }
-
-
             return image;
         }
 
         private void GetCardsButton_Click(object sender, EventArgs e)
         {
             GetCardsButton.Enabled = false;
-  
             setName = SetComboBox.Text;
             cardRarity = rarityComboBox.Text;
             dataGridView1.Rows.Clear();
             Task.Run(SetCards);
-
-
-
-
         }
 
          public Image ScryfallCard(int multiverseId)
-        {
+         {
             string baseUrl = "https://api.scryfall.com/";
             string quality = "normal"; // large small normal
             string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);
@@ -209,8 +192,7 @@ namespace Karciochy_MTG
                 }
             }
 
-
-        }
+         }
 
         async public Task SetCards()
         {
@@ -225,59 +207,28 @@ namespace Karciochy_MTG
                      if (card.ImageUrl != null)
                      {
                         _ = Task.Run(() =>
-                          {
-                              Image img = ScryfallCard(card.MultiverseId.Value);//DownloadImage(card.ImageUrl.AbsoluteUri);
+                        {
+                            Image img = ScryfallCard(card.MultiverseId.Value);//DownloadImage(card.ImageUrl.AbsoluteUri);
 
-                              if (dataGridView1.InvokeRequired)
-                              {
-                                  dataGridView1.Invoke(new MethodInvoker(() =>
-                                  {
-                                      dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
-                                      dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
-                                  }));
+                            SetWinFormControll(dataGridView1, () =>
+                            {
+                                dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
+                                dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
+                            });
 
-                              }
-                              else
-                              {
-                                  dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
-                                  dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
-                              }
+                            SetWinFormControll(progressBar1, () => 
+                            {
+                                progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
+                            });                         
+                            Console.WriteLine((int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f));
 
-
-                              if (progressBar1.InvokeRequired)
-                              {
-                                  progressBar1.Invoke(new MethodInvoker(() =>
-                                  {
-                                      progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
-                                  }));
-
-                              }
-                              else
-                              {
-                                  progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
-                              }
-
-                              Console.WriteLine((int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f));
-
-                          });
-                             
-                         
-
-
-
+                        });                        
                      }
                  }
             }
 
-             if (GetCardsButton.InvokeRequired)
-                 GetCardsButton.Invoke(new MethodInvoker(() => {
-                     GetCardsButton.Enabled = true;
-                 }));
-             else GetCardsButton.Enabled = true;
-
+            SetWinFormControll(GetCardsButton, () => GetCardsButton.Enabled = true);
              
-
-
         }
 
         private void DataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
