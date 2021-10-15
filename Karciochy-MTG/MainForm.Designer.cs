@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Lp = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -67,10 +67,9 @@
             this.Set,
             this.Info,
             this.Image});
-            this.dataGridView1.Location = new System.Drawing.Point(16, 126);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 102);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(889, 721);
+            this.dataGridView1.Size = new System.Drawing.Size(667, 586);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_RowEnter);
             // 
@@ -94,9 +93,9 @@
             // 
             // Info
             // 
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Info.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Info.DefaultCellStyle = dataGridViewCellStyle1;
             this.Info.HeaderText = "Info";
             this.Info.Name = "Info";
             this.Info.Width = 200;
@@ -104,10 +103,10 @@
             // Image
             // 
             this.Image.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle18.NullValue")));
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Image.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle2.NullValue")));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Image.DefaultCellStyle = dataGridViewCellStyle2;
             this.Image.DividerWidth = 1;
             this.Image.HeaderText = "Image";
             this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
@@ -116,10 +115,9 @@
             // 
             // GetCardsButton
             // 
-            this.GetCardsButton.Location = new System.Drawing.Point(16, 10);
-            this.GetCardsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GetCardsButton.Location = new System.Drawing.Point(12, 8);
             this.GetCardsButton.Name = "GetCardsButton";
-            this.GetCardsButton.Size = new System.Drawing.Size(280, 66);
+            this.GetCardsButton.Size = new System.Drawing.Size(210, 54);
             this.GetCardsButton.TabIndex = 2;
             this.GetCardsButton.Text = "Get Cards";
             this.GetCardsButton.UseVisualStyleBackColor = true;
@@ -127,20 +125,17 @@
             // 
             // cardNameTextBox
             // 
-            this.cardNameTextBox.Location = new System.Drawing.Point(8, 25);
-            this.cardNameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cardNameTextBox.Location = new System.Drawing.Point(6, 20);
             this.cardNameTextBox.Name = "cardNameTextBox";
-            this.cardNameTextBox.Size = new System.Drawing.Size(124, 22);
+            this.cardNameTextBox.Size = new System.Drawing.Size(94, 20);
             this.cardNameTextBox.TabIndex = 3;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.cardNameTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(304, 10);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Location = new System.Drawing.Point(228, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Size = new System.Drawing.Size(145, 66);
+            this.groupBox1.Size = new System.Drawing.Size(109, 54);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Card Name";
@@ -148,11 +143,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.SetComboBox);
-            this.groupBox2.Location = new System.Drawing.Point(617, 10);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Location = new System.Drawing.Point(463, 8);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox2.Size = new System.Drawing.Size(288, 66);
+            this.groupBox2.Size = new System.Drawing.Size(216, 54);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Set";
@@ -160,10 +153,9 @@
             // SetComboBox
             // 
             this.SetComboBox.FormattingEnabled = true;
-            this.SetComboBox.Location = new System.Drawing.Point(8, 22);
-            this.SetComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SetComboBox.Location = new System.Drawing.Point(6, 18);
             this.SetComboBox.Name = "SetComboBox";
-            this.SetComboBox.Size = new System.Drawing.Size(271, 24);
+            this.SetComboBox.Size = new System.Drawing.Size(204, 21);
             this.SetComboBox.TabIndex = 6;
             // 
             // pictureBox1
@@ -172,10 +164,9 @@
             this.pictureBox1.ErrorImage = null;
             this.pictureBox1.Image = global::Karciochy_MTG.Properties.Resources.Magic_card_back;
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(19, 26);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Location = new System.Drawing.Point(14, 21);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(616, 794);
+            this.pictureBox1.Size = new System.Drawing.Size(462, 645);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
@@ -183,11 +174,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.pictureBox1);
-            this.groupBox3.Location = new System.Drawing.Point(919, 10);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Location = new System.Drawing.Point(689, 8);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox3.Size = new System.Drawing.Size(655, 837);
+            this.groupBox3.Size = new System.Drawing.Size(491, 680);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Card Image";
@@ -195,11 +184,9 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.rarityComboBox);
-            this.groupBox4.Location = new System.Drawing.Point(457, 10);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Location = new System.Drawing.Point(343, 8);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox4.Size = new System.Drawing.Size(152, 66);
+            this.groupBox4.Size = new System.Drawing.Size(114, 54);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Rarity";
@@ -207,27 +194,25 @@
             // rarityComboBox
             // 
             this.rarityComboBox.FormattingEnabled = true;
-            this.rarityComboBox.Location = new System.Drawing.Point(8, 25);
-            this.rarityComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rarityComboBox.Location = new System.Drawing.Point(6, 20);
             this.rarityComboBox.Name = "rarityComboBox";
-            this.rarityComboBox.Size = new System.Drawing.Size(135, 24);
+            this.rarityComboBox.Size = new System.Drawing.Size(102, 21);
             this.rarityComboBox.TabIndex = 7;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(16, 84);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.progressBar1.Location = new System.Drawing.Point(12, 68);
             this.progressBar1.MarqueeAnimationSpeed = 17;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(889, 34);
+            this.progressBar1.Size = new System.Drawing.Size(667, 28);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 8;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1591, 862);
+            this.ClientSize = new System.Drawing.Size(1193, 700);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -235,7 +220,6 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.GetCardsButton);
             this.Controls.Add(this.dataGridView1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Karciochy MTG";

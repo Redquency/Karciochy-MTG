@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karciochy-MTG", "Karciochy-MTG\Karciochy-MTG.csproj", "{9D3C00B3-46F4-445D-9C17-1B62E064AAE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG_Test", "MTG_Test\MTG_Test.csproj", "{22DD991B-96AD-45B0-BDCE-C741D9A51F70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9D3C00B3-46F4-445D-9C17-1B62E064AAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D3C00B3-46F4-445D-9C17-1B62E064AAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D3C00B3-46F4-445D-9C17-1B62E064AAE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22DD991B-96AD-45B0-BDCE-C741D9A51F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22DD991B-96AD-45B0-BDCE-C741D9A51F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22DD991B-96AD-45B0-BDCE-C741D9A51F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22DD991B-96AD-45B0-BDCE-C741D9A51F70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

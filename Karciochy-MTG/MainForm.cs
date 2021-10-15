@@ -15,7 +15,7 @@ using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 using System.Threading;
 using Newtonsoft.Json;
-
+using System.Diagnostics;
 
 namespace Karciochy_MTG
 {
@@ -98,7 +98,7 @@ namespace Karciochy_MTG
                         }
                         else
                         {
-                            throw new Exception("SETUP CARD FAIL");
+                    throw page.Exception;
                         }
                     //}));
 
@@ -179,9 +179,7 @@ namespace Karciochy_MTG
          {
             string baseUrl = "https://api.scryfall.com/";
             string quality = "normal"; // large small normal
-            string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);
-            //byte[] buffer = new byte[1024 * 10];
-            //byte[] buffer = new byte[1024*100];
+            string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);         
 
             using (System.Net.WebClient webClient = new System.Net.WebClient())
             {
