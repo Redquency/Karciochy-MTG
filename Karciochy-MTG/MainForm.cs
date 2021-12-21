@@ -175,15 +175,18 @@ namespace Karciochy_MTG
             Task.Run(SetCards);
         }
 
-         public Image ScryfallCard(int multiverseId)
+        public async Task<Image> ScryfallCard(int multiverseId)
          {
             string baseUrl = "https://api.scryfall.com/";
             string quality = "normal"; // large small normal
-            string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);         
+            string cardUrl = string.Format("cards/multiverse/{0}?format=image&amp;version={1}", multiverseId, quality);
+
+            var uri = new Uri(Path.Combine(baseUrl, cardUrl));
 
             using (System.Net.WebClient webClient = new System.Net.WebClient())
             {
-                using (Stream stream = webClient.OpenRead(Path.Combine(baseUrl, cardUrl)))
+
+                using (Stream stream = await webClient.OpenReadTaskAsync(uri))
                 {
                     Image cardImage = System.Drawing.Image.FromStream(stream);
                     return cardImage;
@@ -204,23 +207,7 @@ namespace Karciochy_MTG
                  {
                      if (card.ImageUrl != null)
                      {
-                        _ = Task.Run(() =>
-                        {
-                            Image img = ScryfallCard(card.MultiverseId.Value);//DownloadImage(card.ImageUrl.AbsoluteUri);
-
-                            SetWinFormControll(dataGridView1, () =>
-                            {
-                                dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
-                                dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
-                            });
-
-                            SetWinFormControll(progressBar1, () => 
-                            {
-                                progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
-                            });                         
-                            Console.WriteLine((int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f));
-
-                        });                        
+                         SetCard(card, totalCardCount);
                      }
                  }
             }
@@ -228,7 +215,22 @@ namespace Karciochy_MTG
             SetWinFormControll(GetCardsButton, () => GetCardsButton.Enabled = true);
              
         }
+         private async Task SetCard(Card card, int totalCardCount)
+        {
+            Image img = await ScryfallCard(card.MultiverseId.Value);//DownloadImage(card.ImageUrl.AbsoluteUri);
 
+            SetWinFormControll(dataGridView1, () =>
+            {
+                dataGridView1.Rows.Add(new object[] { dataGridView1.Rows.Count, card.Name, card.SetName, card.Text, img });
+                dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0];
+            });
+
+            SetWinFormControll(progressBar1, () =>
+            {
+                progressBar1.Value = (int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f);
+            });
+            Console.WriteLine((int)((float)((float)dataGridView1.Rows.Count / (float)totalCardCount) * 100f));
+        }
         private void DataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
